@@ -1,0 +1,67 @@
+@model DestinyLoadoutManager.Models.Weapon
+
+@{
+    ViewData["Title"] = $"Edit - {Model.Name}";
+}
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <h1>Edit Weapon</h1>
+
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group mb-3">
+                <label for="Name">Weapon Name</label>
+                <input type="text" class="form-control" id="Name" asp-for="Name" required>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="Type">Weapon Type</label>
+                <select class="form-select" id="Type" asp-for="Type" required>
+                    <option value="">-- Select Type --</option>
+                    @foreach (var type in Enum.GetValues(typeof(DestinyLoadoutManager.Models.WeaponType)))
+                    {
+                        <option value="@type" selected="@(Model.Type.ToString() == type.ToString())">@type</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="Element">Element</label>
+                <select class="form-select" id="Element" asp-for="Element" required>
+                    <option value="">-- Select Element --</option>
+                    @foreach (var element in Enum.GetValues(typeof(DestinyLoadoutManager.Models.ElementType)))
+                    {
+                        <option value="@element" selected="@(Model.Element.ToString() == element.ToString())">@element</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="Slot">Slot</label>
+                <select class="form-select" id="Slot" asp-for="Slot" required>
+                    <option value="">-- Select Slot --</option>
+                    @foreach (var slot in Enum.GetValues(typeof(DestinyLoadoutManager.Models.EquipSlot)))
+                    {
+                        <option value="@slot" selected="@(Model.Slot.ToString() == slot.ToString())">@slot</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="AmmoType">Ammo Type</label>
+                <select class="form-select" id="AmmoType" asp-for="AmmoType" required>
+                    <option value="">-- Select Ammo Type --</option>
+                    @foreach (var ammo in Enum.GetValues(typeof(DestinyLoadoutManager.Models.AmmoType)))
+                    {
+                        <option value="@ammo" selected="@(Model.AmmoType.ToString() == ammo.ToString())">@ammo</option>
+                    }
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

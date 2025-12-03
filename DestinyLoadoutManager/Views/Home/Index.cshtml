@@ -1,0 +1,60 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="jumbotron bg-light p-5 rounded">
+            <h1 class="display-4">Welcome to Destiny 2 Loadout Manager</h1>
+            <p class="lead">Organize your weapons and get smart loadout recommendations based on the current activity!</p>
+            <hr class="my-4">
+            <p>
+                This application helps you manage your Destiny 2 loadouts efficiently. 
+                Whether you're preparing for challenging content or experimenting with different weapon combinations, 
+                we've got you covered.
+            </p>
+            @if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                <div class="mt-4">
+                    <a class="btn btn-primary btn-lg me-2" href="/Loadout/Index" role="button">View My Loadouts</a>
+                    <a class="btn btn-success btn-lg me-2" href="/Loadout/Create" role="button">Create New Loadout</a>
+                    <a class="btn btn-info btn-lg" href="/Recommendation/Index" role="button">Get Loadout Advice</a>
+                </div>
+            }
+            else
+            {
+                <div class="mt-4">
+                    <a class="btn btn-primary btn-lg me-2" href="/Identity/Account/Login" role="button">Login</a>
+                    <a class="btn btn-success btn-lg" href="/Identity/Account/Register" role="button">Register</a>
+                </div>
+            }
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">🛠️ Loadout Builder</h5>
+                        <p class="card-text">Create and customize your weapon loadouts with an intuitive interface.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">🎯 Smart Recommendations</h5>
+                        <p class="card-text">Get loadout suggestions based on surge types and champion mods.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">🔐 Secure & Personal</h5>
+                        <p class="card-text">Your loadouts are private and stored securely in the database.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

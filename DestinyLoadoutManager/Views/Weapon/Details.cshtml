@@ -1,0 +1,54 @@
+@model DestinyLoadoutManager.Models.Weapon
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <h1>@Model.Name</h1>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <p><strong>Type:</strong> @Model.Type</p>
+                        <p><strong>Slot:</strong> @Model.Slot</p>
+                        <p><strong>Ammo Type:</strong> @Model.AmmoType</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            <strong>Element:</strong> 
+                            <span class="badge" style="background-color: @GetElementColor(Model.Element); font-size: 1em; padding: 0.5em 0.8em;">
+                                @Model.Element
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    @if (User?.IsInRole("Admin") ?? false)
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+                    }
+                    <a asp-action="Index" class="btn btn-secondary">Back to Weapons</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    private string GetElementColor(DestinyLoadoutManager.Models.ElementType element)
+    {
+        return element switch
+        {
+            DestinyLoadoutManager.Models.ElementType.Arc => "#0066FF",
+            DestinyLoadoutManager.Models.ElementType.Solar => "#FF6600",
+            DestinyLoadoutManager.Models.ElementType.Void => "#6600CC",
+            DestinyLoadoutManager.Models.ElementType.Kinetic => "#999999",
+            _ => "#333333"
+        };
+    }
+}

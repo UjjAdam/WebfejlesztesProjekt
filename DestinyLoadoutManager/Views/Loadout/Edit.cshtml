@@ -1,0 +1,149 @@
+@model DestinyLoadoutManager.Models.Loadout
+
+@{
+    ViewData["Title"] = $"Edit - {Model.Name}";
+    var primaryWeapons = ViewBag.PrimaryWeapons as List<DestinyLoadoutManager.Models.Weapon>;
+    var specialWeapons = ViewBag.SpecialWeapons as List<DestinyLoadoutManager.Models.Weapon>;
+    var heavyWeapons = ViewBag.HeavyWeapons as List<DestinyLoadoutManager.Models.Weapon>;
+}
+
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <h1>Edit Loadout: @Model.Name</h1>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header bg-primary text-white">
+                        <h5>Edit Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Edit">
+                            <input type="hidden" asp-for="Id" />
+                            
+                            <div class="form-group mb-3">
+                                <label asp-for="Name">Loadout Name</label>
+                                <input asp-for="Name" class="form-control" required>
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label asp-for="Description">Description</label>
+                                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header bg-success text-white">
+                        <h5>Current Weapons</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.LoadoutWeapons.Any())
+                        {
+                            @foreach (var lw in Model.LoadoutWeapons.OrderBy(x => x.Slot))
+                            {
+                                <div class="mb-2 p-2 bg-light rounded d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>@lw.Slot.ToString():</strong> @lw.Weapon.Name
+                                        <br>
+                                        <small class="text-muted">@lw.Weapon.Type - @lw.Weapon.Element</small>
+                                    </div>
+                                    <form asp-action="RemoveWeapon" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="loadoutWeaponId" value="@lw.Id" />
+                                        <input type="hidden" name="loadoutId" value="@Model.Id" />
+                                        <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                                    </form>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted">No weapons yet. Add some below!</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-header">Primary Slot</div>
+                    <div class="card-body">
+                        <form asp-action="AddWeapon" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="loadoutId" value="@Model.Id" />
+                            <input type="hidden" name="slotStr" value="Primary" />
+                            
+                            <select name="weaponId" class="form-select mb-2" required>
+                                <option value="">-- Select Weapon --</option>
+                                @foreach (var weapon in primaryWeapons ?? new List<DestinyLoadoutManager.Models.Weapon>())
+                                {
+                                    <option value="@weapon.Id">@weapon.Name (@weapon.Element)</option>
+                                }
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-success w-100">Add to Primary</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-header">Special Slot</div>
+                    <div class="card-body">
+                        <form asp-action="AddWeapon" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="loadoutId" value="@Model.Id" />
+                            <input type="hidden" name="slotStr" value="Special" />
+                            
+                            <select name="weaponId" class="form-select mb-2" required>
+                                <option value="">-- Select Weapon --</option>
+                                @foreach (var weapon in specialWeapons ?? new List<DestinyLoadoutManager.Models.Weapon>())
+                                {
+                                    <option value="@weapon.Id">@weapon.Name (@weapon.Element)</option>
+                                }
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-success w-100">Add to Special</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-header">Heavy Slot</div>
+                    <div class="card-body">
+                        <form asp-action="AddWeapon" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="loadoutId" value="@Model.Id" />
+                            <input type="hidden" name="slotStr" value="Heavy" />
+                            
+                            <select name="weaponId" class="form-select mb-2" required>
+                                <option value="">-- Select Weapon --</option>
+                                @foreach (var weapon in heavyWeapons ?? new List<DestinyLoadoutManager.Models.Weapon>())
+                                {
+                                    <option value="@weapon.Id">@weapon.Name (@weapon.Element)</option>
+                                }
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-success w-100">Add to Heavy</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-info">View Loadout</a>
+            <a asp-action="Index" class="btn btn-secondary">Back to Loadouts</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+@model DestinyLoadoutManager.Models.ErrorViewModel
+
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <h1 class="text-danger">Error.</h1>
+        <h2 class="text-danger">An error occurred while processing your request.</h2>
+
+        @if (Model.ShowRequestId)
+        {
+            <p>
+                <strong>Request ID:</strong> <code>@Model.RequestId</code>
+            </p>
+        }
+
+        <p class="mt-3">
+            <a href="/" class="btn btn-primary">Back to Home</a>
+        </p>
+    </div>
+</div>

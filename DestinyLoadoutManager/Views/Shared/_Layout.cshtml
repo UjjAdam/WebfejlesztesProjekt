@@ -1,0 +1,78 @@
+@{
+    ViewData["Title"] = "Destiny 2 Loadout Manager";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Destiny 2 Loadout Manager</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/custom.css" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">🎮 Destiny 2 Loadout Manager</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    @if (User?.Identity?.IsAuthenticated ?? false)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Loadout/Index">My Loadouts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Weapon/Index">Weapons</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Recommendation/Index">Loadout Advisor</a>
+                        </li>
+                        @if (User?.IsInRole("Admin") ?? false)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Weapon/Create">Add Weapon (Admin)</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <form method="post" action="/Identity/Account/Logout" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="nav-link btn btn-link">Logout (@User?.Identity?.Name)</button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Identity/Account/Login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Identity/Account/Register">Register</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-4">
+        <div class="container">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p>&copy; 2025 Destiny 2 Loadout Manager - Webfejlesztés projektmunka</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/loadout-builder.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

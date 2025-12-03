@@ -1,0 +1,357 @@
+/* ===========================
+   Destiny 2 Loadout Manager CSS
+   =========================== */
+
+:root {
+    --arc-color: #0066FF;
+    --solar-color: #FF6600;
+    --void-color: #6600CC;
+    --kinetic-color: #999999;
+    --destiny-dark: #0a0e27;
+    --destiny-accent: #f39c12;
+}
+
+body {
+    background-color: #0f1419;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Navigation */
+.navbar {
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%) !important;
+    box-shadow: 0 2px 8px rgba(243, 156, 18, 0.2);
+    border-bottom: 2px solid var(--destiny-accent);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: var(--destiny-accent) !important;
+    text-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+}
+
+.nav-link {
+    color: #e0e0e0 !important;
+    transition: all 0.3s ease;
+    margin: 0 5px;
+}
+
+.nav-link:hover {
+    color: var(--destiny-accent) !important;
+    text-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+}
+
+/* Cards and Containers */
+.card {
+    background-color: #1a1f3a;
+    border: 1px solid rgba(243, 156, 18, 0.2);
+    color: #e0e0e0;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.card:hover {
+    border-color: var(--destiny-accent);
+    box-shadow: 0 6px 12px rgba(243, 156, 18, 0.2);
+    transform: translateY(-2px);
+}
+
+.card-header {
+    background-color: #0f1419 !important;
+    border-bottom: 2px solid var(--destiny-accent);
+    color: var(--destiny-accent) !important;
+}
+
+.card-body {
+    background-color: #1a1f3a;
+}
+
+/* Element Badge Colors */
+.badge {
+    font-weight: bold;
+    padding: 0.5em 0.8em !important;
+}
+
+.badge.arc {
+    background-color: var(--arc-color) !important;
+}
+
+.badge.solar {
+    background-color: var(--solar-color) !important;
+}
+
+.badge.void {
+    background-color: var(--void-color) !important;
+}
+
+.badge.kinetic {
+    background-color: var(--kinetic-color) !important;
+}
+
+/* Weapon Cards */
+.weapon-card {
+    background: linear-gradient(135deg, #1a1f3a 0%, #0f1419 100%);
+    border: 1px solid rgba(243, 156, 18, 0.15) !important;
+    transition: all 0.3s ease;
+}
+
+.weapon-card:hover {
+    border-color: var(--destiny-accent) !important;
+    box-shadow: 0 4px 8px rgba(243, 156, 18, 0.2);
+}
+
+.weapon-card h6 {
+    color: var(--destiny-accent);
+    font-weight: bold;
+}
+
+.weapon-card p {
+    margin-bottom: 0.3rem;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--destiny-accent);
+    border-color: var(--destiny-accent);
+    color: #000;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #ff9500;
+    border-color: #ff9500;
+    box-shadow: 0 0 15px rgba(243, 156, 18, 0.4);
+}
+
+.btn-success {
+    background-color: #27ae60;
+    border-color: #27ae60;
+}
+
+.btn-success:hover {
+    background-color: #229954;
+}
+
+.btn-info {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.btn-info:hover {
+    background-color: #2980b9;
+}
+
+.btn-warning {
+    background-color: #e67e22;
+    border-color: #e67e22;
+}
+
+.btn-warning:hover {
+    background-color: #d35400;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+.btn-secondary {
+    background-color: #7f8c8d;
+    border-color: #7f8c8d;
+}
+
+.btn-secondary:hover {
+    background-color: #34495e;
+}
+
+/* Forms */
+.form-control,
+.form-select {
+    background-color: #0f1419;
+    border: 1px solid #7f8c8d;
+    color: #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: #0f1419;
+    border-color: var(--destiny-accent);
+    color: #e0e0e0;
+    box-shadow: 0 0 10px rgba(243, 156, 18, 0.3);
+}
+
+.form-label {
+    color: #e0e0e0;
+    font-weight: 500;
+}
+
+/* Alerts */
+.alert {
+    background-color: #1a1f3a;
+    border: 1px solid;
+    color: #e0e0e0;
+}
+
+.alert-info {
+    border-color: #3498db;
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.alert-success {
+    border-color: #27ae60;
+    background-color: rgba(39, 174, 96, 0.1);
+}
+
+.alert-warning {
+    border-color: #e67e22;
+    background-color: rgba(230, 126, 34, 0.1);
+}
+
+.alert-danger {
+    border-color: #e74c3c;
+    background-color: rgba(231, 76, 60, 0.1);
+}
+
+/* Tables */
+.table {
+    color: #e0e0e0;
+    border-color: #7f8c8d;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(243, 156, 18, 0.1);
+    cursor: pointer;
+}
+
+.table-dark {
+    background-color: #0f1419 !important;
+    border-color: var(--destiny-accent);
+}
+
+/* Jumbotron */
+.jumbotron {
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%) !important;
+    border: 2px solid rgba(243, 156, 18, 0.3);
+    box-shadow: 0 4px 12px rgba(243, 156, 18, 0.1);
+}
+
+.jumbotron h1 {
+    color: var(--destiny-accent);
+    text-shadow: 0 0 20px rgba(243, 156, 18, 0.5);
+    font-weight: bold;
+}
+
+.jumbotron .lead {
+    color: #bdc3c7;
+    font-size: 1.1rem;
+}
+
+/* Footer */
+footer {
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+    border-top: 2px solid var(--destiny-accent);
+    margin-top: auto;
+}
+
+/* Recommendation Results */
+.match-score {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--destiny-accent);
+}
+
+.recommendation-card {
+    border-left: 4px solid var(--destiny-accent);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, rgba(243, 156, 18, 0.1) 0%, transparent 100%);
+}
+
+/* Animations */
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px rgba(243, 156, 18, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(243, 156, 18, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(243, 156, 18, 0.5);
+    }
+}
+
+.btn-primary:active,
+.btn-primary:focus {
+    animation: glow 0.5s ease-in-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    .btn {
+        margin-bottom: 0.5rem;
+    }
+
+    .jumbotron {
+        padding: 2rem 1rem !important;
+    }
+
+    .weapon-card {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Text Utilities */
+.text-arc {
+    color: var(--arc-color) !important;
+}
+
+.text-solar {
+    color: var(--solar-color) !important;
+}
+
+.text-void {
+    color: var(--void-color) !important;
+}
+
+.text-kinetic {
+    color: var(--kinetic-color) !important;
+}
+
+/* Load Indicator */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(243, 156, 18, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--destiny-accent);
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

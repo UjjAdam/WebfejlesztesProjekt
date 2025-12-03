@@ -1,0 +1,20 @@
+@model DestinyLoadoutManager.Models.Loadout
+
+@{
+    ViewData["Title"] = $"Delete - {Model.Name}";
+}
+
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="alert alert-danger">
+            <h4>Delete Loadout</h4>
+            <p>Are you sure you want to delete <strong>@Model.Name</strong>? This action cannot be undone.</p>
+        </div>
+
+        <form asp-action="DeleteConfirmed" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+@model IEnumerable<DestinyLoadoutManager.Models.Loadout>
+
+@{
+    ViewData["Title"] = "My Loadouts";
+}
+
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <h1>My Loadouts</h1>
+        
+        @if (Model.Any())
+        {
+            <div class="mb-3">
+                <a asp-action="Create" class="btn btn-primary">+ Create New Loadout</a>
+            </div>
+
+            <div class="row">
+                @foreach (var loadout in Model)
+                {
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">@loadout.Name</h5>
+                                @if (!string.IsNullOrEmpty(loadout.Description))
+                                {
+                                    <p class="card-text">@loadout.Description</p>
+                                }
+                                <p class="card-text"><small class="text-muted">@loadout.LoadoutWeapons.Count weapons</small></p>
+                            </div>
+                            <div class="card-footer">
+                                <a asp-action="Details" asp-route-id="@loadout.Id" class="btn btn-sm btn-info">View</a>
+                                <a asp-action="Edit" asp-route-id="@loadout.Id" class="btn btn-sm btn-warning">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@loadout.Id" class="btn btn-sm btn-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                You haven't created any loadouts yet. <a asp-action="Create">Create one now!</a>
+            </div>
+        }
+    </div>
+</div>
