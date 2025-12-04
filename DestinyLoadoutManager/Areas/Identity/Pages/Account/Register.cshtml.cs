@@ -29,20 +29,20 @@ namespace DestinyLoadoutManager.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
-            public string Email { get; set; }
+            [StringLength(50, ErrorMessage = "A felhasználónév legalább {2} és maximum {1} karakter hosszú lehet.", MinimumLength = 3)]
+            [Display(Name = "Felhasználónév")]
+            public string UserName { get; set; } = string.Empty;
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
-            public string Password { get; set; }
+            [EmailAddress]
+            [Display(Name = "Email")]
+            public string Email { get; set; } = string.Empty;
 
+            [Required]
+            [StringLength(100, ErrorMessage = "A jelszó legalább {2} és maximum {1} karakter hosszú lehet.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
+            [Display(Name = "Jelszó")]
+            public string Password { get; set; } = string.Empty;
         }
 
         public async Task OnGetAsync()
@@ -53,7 +53,7 @@ namespace DestinyLoadoutManager.Areas.Identity.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -63,7 +63,9 @@ namespace DestinyLoadoutManager.Areas.Identity.Pages.Account
                     await _userManager.AddToRoleAsync(user, "User");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect("~/");
+                    _logger.LogInformation("User signed in automatically.");
+                    
+                    return LocalRedirect("/Loadout/Index");
                 }
                 foreach (var error in result.Errors)
                 {

@@ -37,7 +37,7 @@ namespace DestinyLoadoutManager.Controllers
             string surgeName,
             List<int> selectedChampionIds)
         {
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
             var surge = await _context.Surges
                 .FirstOrDefaultAsync(s => s.Name == surgeName);

@@ -16,7 +16,7 @@ namespace DestinyLoadoutManager.Services
 
     public class LoadoutRecommendation
     {
-        public Loadout Loadout { get; set; }
+        public Loadout? Loadout { get; set; }
         public int MatchScore { get; set; }
         public List<string> MatchReasons { get; set; } = new List<string>();
     }
@@ -60,7 +60,7 @@ namespace DestinyLoadoutManager.Services
 
                 // Calculate match score based on surge match
                 var weaponsWithActiveSurge = loadout.LoadoutWeapons
-                    .Where(lw => lw.Weapon.Element == request.ActiveSurge)
+                    .Where(lw => lw.Weapon != null && lw.Weapon.Element == request.ActiveSurge)
                     .ToList();
 
                 if (weaponsWithActiveSurge.Any())
@@ -100,7 +100,7 @@ namespace DestinyLoadoutManager.Services
                     .ToList();
 
                 var matchingWeapons = loadout.LoadoutWeapons
-                    .Where(lw => effectiveWeaponTypes.Contains(lw.Weapon.Type))
+                    .Where(lw => lw.Weapon != null && effectiveWeaponTypes.Contains(lw.Weapon.Type))
                     .ToList();
 
                 if (matchingWeapons.Any())

@@ -49,11 +49,32 @@
                         {
                             @foreach (var lw in Model.LoadoutWeapons.OrderBy(x => x.Slot))
                             {
+                                var elementColor = lw.Weapon?.Element switch
+                                {
+                                    DestinyLoadoutManager.Models.ElementType.Solar => "warning",
+                                    DestinyLoadoutManager.Models.ElementType.Arc => "info",
+                                    DestinyLoadoutManager.Models.ElementType.Void => "dark",
+                                    DestinyLoadoutManager.Models.ElementType.Kinetic => "secondary",
+                                    _ => "light"
+                                };
+                                var elementEmoji = lw.Weapon?.Element switch
+                                {
+                                    DestinyLoadoutManager.Models.ElementType.Solar => "🔥",
+                                    DestinyLoadoutManager.Models.ElementType.Arc => "⚡",
+                                    DestinyLoadoutManager.Models.ElementType.Void => "💜",
+                                    DestinyLoadoutManager.Models.ElementType.Kinetic => "⚪",
+                                    _ => "❓"
+                                };
+
                                 <div class="mb-2 p-2 bg-light rounded d-flex justify-content-between align-items-center">
                                     <div>
-                                        <strong>@lw.Slot.ToString():</strong> @lw.Weapon.Name
+                                        <strong>@lw.Slot.ToString():</strong> @lw.Weapon?.Name
                                         <br>
-                                        <small class="text-muted">@lw.Weapon.Type - @lw.Weapon.Element</small>
+                                        <small>
+                                            <span class="badge bg-@elementColor">@elementEmoji @lw.Weapon?.Element</span>
+                                            <span class="badge bg-secondary">@lw.Weapon?.Type</span>
+                                            <span class="badge bg-info">@lw.Weapon?.AmmoType</span>
+                                        </small>
                                     </div>
                                     <form asp-action="RemoveWeapon" method="post" style="display:inline;">
                                         @Html.AntiForgeryToken()
@@ -76,18 +97,26 @@
         <div class="row mt-4">
             <div class="col-md-4 mb-3">
                 <div class="card">
-                    <div class="card-header">Primary Slot</div>
+                    <div class="card-header bg-info text-white">
+                        <strong>Primary Slot</strong>
+                    </div>
                     <div class="card-body">
                         <form asp-action="AddWeapon" method="post">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="loadoutId" value="@Model.Id" />
                             <input type="hidden" name="slotStr" value="Primary" />
                             
-                            <select name="weaponId" class="form-select mb-2" required>
-                                <option value="">-- Select Weapon --</option>
+                            <div class="mb-2">
+                                <label for="weaponSearch-primary" class="form-label">Search Weapon</label>
+                                <input type="text" id="weaponSearch-primary" class="form-control" placeholder="Type weapon name..." autocomplete="off">
+                                <small class="text-muted">Type to search weapons</small>
+                            </div>
+                            
+                            <select name="weaponId" id="weaponSelect-primary" class="form-select mb-2" required>
+                                <option value="">-- Select from list --</option>
                                 @foreach (var weapon in primaryWeapons ?? new List<DestinyLoadoutManager.Models.Weapon>())
                                 {
-                                    <option value="@weapon.Id">@weapon.Name (@weapon.Element)</option>
+                                    <option value="@weapon.Id">@weapon.Name - @weapon.Element @weapon.Type @weapon.AmmoType</option>
                                 }
                             </select>
                             <button type="submit" class="btn btn-sm btn-success w-100">Add to Primary</button>
@@ -98,21 +127,29 @@
 
             <div class="col-md-4 mb-3">
                 <div class="card">
-                    <div class="card-header">Special Slot</div>
+                    <div class="card-header bg-warning text-dark">
+                        <strong>Special Slot</strong>
+                    </div>
                     <div class="card-body">
                         <form asp-action="AddWeapon" method="post">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="loadoutId" value="@Model.Id" />
                             <input type="hidden" name="slotStr" value="Special" />
                             
-                            <select name="weaponId" class="form-select mb-2" required>
-                                <option value="">-- Select Weapon --</option>
+                            <div class="mb-2">
+                                <label for="weaponSearch-special" class="form-label">Search Weapon</label>
+                                <input type="text" id="weaponSearch-special" class="form-control" placeholder="Type weapon name..." autocomplete="off">
+                                <small class="text-muted">Type to search weapons</small>
+                            </div>
+                            
+                            <select name="weaponId" id="weaponSelect-special" class="form-select mb-2" required>
+                                <option value="">-- Select from list --</option>
                                 @foreach (var weapon in specialWeapons ?? new List<DestinyLoadoutManager.Models.Weapon>())
                                 {
-                                    <option value="@weapon.Id">@weapon.Name (@weapon.Element)</option>
+                                    <option value="@weapon.Id">@weapon.Name - @weapon.Element @weapon.Type @weapon.AmmoType</option>
                                 }
                             </select>
-                            <button type="submit" class="btn btn-sm btn-success w-100">Add to Special</button>
+                            <button type="submit" class="btn btn-sm btn-warning w-100">Add to Special</button>
                         </form>
                     </div>
                 </div>
@@ -120,21 +157,29 @@
 
             <div class="col-md-4 mb-3">
                 <div class="card">
-                    <div class="card-header">Heavy Slot</div>
+                    <div class="card-header bg-danger text-white">
+                        <strong>Heavy Slot</strong>
+                    </div>
                     <div class="card-body">
                         <form asp-action="AddWeapon" method="post">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="loadoutId" value="@Model.Id" />
                             <input type="hidden" name="slotStr" value="Heavy" />
                             
-                            <select name="weaponId" class="form-select mb-2" required>
-                                <option value="">-- Select Weapon --</option>
+                            <div class="mb-2">
+                                <label for="weaponSearch-heavy" class="form-label">Search Weapon</label>
+                                <input type="text" id="weaponSearch-heavy" class="form-control" placeholder="Type weapon name..." autocomplete="off">
+                                <small class="text-muted">Type to search weapons</small>
+                            </div>
+                            
+                            <select name="weaponId" id="weaponSelect-heavy" class="form-select mb-2" required>
+                                <option value="">-- Select from list --</option>
                                 @foreach (var weapon in heavyWeapons ?? new List<DestinyLoadoutManager.Models.Weapon>())
                                 {
-                                    <option value="@weapon.Id">@weapon.Name (@weapon.Element)</option>
+                                    <option value="@weapon.Id">@weapon.Name - @weapon.Element @weapon.Type @weapon.AmmoType</option>
                                 }
                             </select>
-                            <button type="submit" class="btn btn-sm btn-success w-100">Add to Heavy</button>
+                            <button type="submit" class="btn btn-sm btn-danger w-100">Add to Heavy</button>
                         </form>
                     </div>
                 </div>
@@ -147,3 +192,37 @@
         </div>
     </div>
 </div>
+
+<script>
+// Simple weapon search/filter for all 3 slots
+function setupWeaponSearch(searchInputId, selectId) {
+    const searchInput = document.getElementById(searchInputId);
+    const select = document.getElementById(selectId);
+    
+    if (!searchInput || !select) return;
+    
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        
+        for (let option of select.options) {
+            if (option.value === '') {
+                option.style.display = 'block';
+                continue;
+            }
+            
+            const text = option.text.toLowerCase();
+            if (text.includes(searchTerm)) {
+                option.style.display = 'block';
+            } else {
+                option.style.display = 'none';
+            }
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    setupWeaponSearch('weaponSearch-primary', 'weaponSelect-primary');
+    setupWeaponSearch('weaponSearch-special', 'weaponSelect-special');
+    setupWeaponSearch('weaponSearch-heavy', 'weaponSelect-heavy');
+});
+</script>

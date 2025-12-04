@@ -19,12 +19,12 @@ else
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-8">
-                                <h5 class="card-title">@rec.Loadout.Name</h5>
-                                @if (!string.IsNullOrEmpty(rec.Loadout.Description))
+                                <h5 class="card-title">@rec.Loadout?.Name</h5>
+                                @if (!string.IsNullOrEmpty(rec.Loadout?.Description))
                                 {
-                                    <p class="card-text">@rec.Loadout.Description</p>
+                                    <p class="card-text">@rec.Loadout?.Description</p>
                                 }
-                                <p class="text-muted">@rec.Loadout.LoadoutWeapons.Count weapons equipped</p>
+                                <p class="text-muted">@rec.Loadout?.LoadoutWeapons?.Count weapons equipped</p>
                             </div>
                             <div class="col-md-4 text-end">
                                 <div class="badge bg-primary p-3 mb-2">
@@ -45,8 +45,8 @@ else
                         </ul>
 
                         <div class="mt-3">
-                            <a href="/Loadout/Details/@rec.Loadout.Id" class="btn btn-sm btn-primary">View Loadout</a>
-                            <a href="/Loadout/Edit/@rec.Loadout.Id" class="btn btn-sm btn-warning">Edit Loadout</a>
+                            <a href="/Loadout/Details/@rec.Loadout?.Id" class="btn btn-sm btn-primary">View Loadout</a>
+                            <a href="/Loadout/Edit/@rec.Loadout?.Id" class="btn btn-sm btn-warning">Edit Loadout</a>
                         </div>
                     </div>
                 </div>

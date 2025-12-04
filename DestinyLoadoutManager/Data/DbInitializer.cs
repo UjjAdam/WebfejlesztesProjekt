@@ -93,6 +93,9 @@ namespace DestinyLoadoutManager.Data
                 var overload = context.Champions.FirstOrDefault(c => c.Name == "Overload");
                 var unstoppable = context.Champions.FirstOrDefault(c => c.Name == "Unstoppable");
 
+                if (antiBarrier == null || overload == null || unstoppable == null)
+                    return;
+
                 var championWeaponTypes = new List<ChampionWeaponType>
                 {
                     // Anti-Barrier: Long range

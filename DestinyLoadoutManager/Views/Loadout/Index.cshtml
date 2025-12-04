@@ -25,7 +25,43 @@
                                 {
                                     <p class="card-text">@loadout.Description</p>
                                 }
-                                <p class="card-text"><small class="text-muted">@loadout.LoadoutWeapons.Count weapons</small></p>
+                                
+                                @if (loadout.LoadoutWeapons.Any())
+                                {
+                                    <div class="mb-2">
+                                        @foreach (var lw in loadout.LoadoutWeapons.OrderBy(x => x.Slot))
+                                        {
+                                            var elementColor = lw.Weapon?.Element switch
+                                            {
+                                                DestinyLoadoutManager.Models.ElementType.Solar => "warning",
+                                                DestinyLoadoutManager.Models.ElementType.Arc => "info",
+                                                DestinyLoadoutManager.Models.ElementType.Void => "dark",
+                                                DestinyLoadoutManager.Models.ElementType.Kinetic => "secondary",
+                                                _ => "light"
+                                            };
+                                            var elementEmoji = lw.Weapon?.Element switch
+                                            {
+                                                DestinyLoadoutManager.Models.ElementType.Solar => "🔥",
+                                                DestinyLoadoutManager.Models.ElementType.Arc => "⚡",
+                                                DestinyLoadoutManager.Models.ElementType.Void => "💜",
+                                                DestinyLoadoutManager.Models.ElementType.Kinetic => "⚪",
+                                                _ => "❓"
+                                            };
+
+                                            <div class="mb-1">
+                                                <small>
+                                                    <strong>@lw.Slot:</strong> @lw.Weapon?.Name
+                                                    <span class="badge bg-@elementColor">@elementEmoji @lw.Weapon?.Element</span>
+                                                    <span class="badge bg-secondary">@lw.Weapon?.Type</span>
+                                                </small>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p class="card-text"><small class="text-muted">No weapons yet</small></p>
+                                }
                             </div>
                             <div class="card-footer">
                                 <a asp-action="Details" asp-route-id="@loadout.Id" class="btn btn-sm btn-info">View</a>

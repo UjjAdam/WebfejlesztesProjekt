@@ -30,7 +30,7 @@ namespace DestinyLoadoutManager.Controllers
         // GET: Loadout/Index
         public async Task<IActionResult> Index()
         {
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
             var loadouts = await _loadoutService.GetUserLoadoutsAsync(userId);
             return View(loadouts);
         }
@@ -38,7 +38,7 @@ namespace DestinyLoadoutManager.Controllers
         // GET: Loadout/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
             var loadout = await _loadoutService.GetLoadoutByIdAsync(id, userId);
 
             if (loadout == null)
@@ -60,7 +60,7 @@ namespace DestinyLoadoutManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
                 loadout.UserId = userId;
                 await _loadoutService.CreateLoadoutAsync(loadout);
                 return RedirectToAction(nameof(Edit), new { id = loadout.Id });
@@ -71,7 +71,7 @@ namespace DestinyLoadoutManager.Controllers
         // GET: Loadout/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
             var loadout = await _loadoutService.GetLoadoutByIdAsync(id, userId);
 
             if (loadout == null)
@@ -94,7 +94,7 @@ namespace DestinyLoadoutManager.Controllers
 
             if (ModelState.IsValid)
             {
-                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
                 await _loadoutService.UpdateLoadoutAsync(loadout, userId);
                 return RedirectToAction(nameof(Details), new { id = loadout.Id });
             }
@@ -109,7 +109,7 @@ namespace DestinyLoadoutManager.Controllers
         // GET: Loadout/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
             var loadout = await _loadoutService.GetLoadoutByIdAsync(id, userId);
 
             if (loadout == null)
@@ -123,7 +123,7 @@ namespace DestinyLoadoutManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
             await _loadoutService.DeleteLoadoutAsync(id, userId);
             return RedirectToAction(nameof(Index));
         }
@@ -135,7 +135,7 @@ namespace DestinyLoadoutManager.Controllers
         {
             if (System.Enum.TryParse<EquipSlot>(slotStr, out var slot))
             {
-                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
                 await _loadoutService.AddWeaponToLoadoutAsync(loadoutId, weaponId, slot, userId);
             }
 
@@ -147,7 +147,7 @@ namespace DestinyLoadoutManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveWeapon(int loadoutWeaponId, int loadoutId)
         {
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
             await _loadoutService.RemoveWeaponFromLoadoutAsync(loadoutWeaponId, userId);
             return RedirectToAction(nameof(Edit), new { id = loadoutId });
         }

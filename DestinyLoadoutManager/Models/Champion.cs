@@ -9,9 +9,9 @@ namespace DestinyLoadoutManager.Models
 
         [Required]
         [StringLength(50)]
-        public string Name { get; set; } // Anti-Barrier, Overload, Unstoppable
+        public string Name { get; set; } = null!; // Anti-Barrier, Overload, Unstoppable
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public virtual ICollection<ChampionWeaponType> ChampionWeaponTypes { get; set; } = new List<ChampionWeaponType>();
     }
@@ -21,7 +21,7 @@ namespace DestinyLoadoutManager.Models
         public int Id { get; set; }
 
         public int ChampionId { get; set; }
-        public virtual Champion Champion { get; set; }
+        public virtual Champion Champion { get; set; } = null!;
 
         public WeaponType WeaponType { get; set; }
     }

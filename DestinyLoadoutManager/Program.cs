@@ -17,11 +17,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
-    options.Password.RequireDigit = true;
-    options.Password.RequiredLength = 8;
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 6;
     options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
 })
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -31,21 +31,75 @@ builder.Services.AddScoped<IWeaponService, WeaponService>();
 builder.Services.AddScoped<ILoadoutService, LoadoutService>();
 builder.Services.AddScoped<IRecommendationService, RecommendationService>();
 
+// Add Session support
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(1);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    // Disable auto-validate antiforgery for all Razor Pages
+    options.Conventions.ConfigureFilter(new Microsoft.AspNetCore.Mvc.IgnoreAntiforgeryTokenAttribute());
+});
 
 var app = builder.Build();
 
-// Initialize database - SIMPLIFIED VERSION (no hang risk)
+// Initialize database and roles
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         
-        // Simple database creation - no migrations, no seed data
+        // Simple database creation
         context.Database.EnsureCreated();
+        
+        // Create roles if they don't exist
+        string[] roleNames = { "Admin", "User" };
+        foreach (var roleName in roleNames)
+        {
+            var roleExist = roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult();
+            if (!roleExist)
+            {
+                roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
+                Console.WriteLine($"Role '{roleName}' created successfully!");
+            }
+        }
+
+        // Seed Surges if not exists
+        if (!context.Surges.Any())
+        {
+            var surges = new List<Surge>
+            {
+                new Surge { Name = "Solar", ElementType = ElementType.Solar },
+                new Surge { Name = "Arc", ElementType = ElementType.Arc },
+                new Surge { Name = "Void", ElementType = ElementType.Void },
+                new Surge { Name = "Kinetic", ElementType = ElementType.Kinetic }
+            };
+            context.Surges.AddRange(surges);
+            context.SaveChanges();
+            Console.WriteLine("Surges seeded successfully!");
+        }
+
+        // Seed Champions if not exists
+        if (!context.Champions.Any())
+        {
+            var champions = new List<Champion>
+            {
+                new Champion { Name = "Anti-Barrier", Description = "This champion cannot be damaged by standard weapons" },
+                new Champion { Name = "Overload", Description = "This champion can interrupt and regenerate" },
+                new Champion { Name = "Unstoppable", Description = "This champion cannot be slowed or stunned" }
+            };
+            context.Champions.AddRange(champions);
+            context.SaveChanges();
+            Console.WriteLine("Champions seeded successfully!");
+        }
         
         Console.WriteLine("Database initialized successfully!");
     }
@@ -68,6 +122,8 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseSession();
 
 app.UseRouting();
 

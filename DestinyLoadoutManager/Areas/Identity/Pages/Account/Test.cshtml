@@ -1,0 +1,65 @@
+@page "/Identity/Account/Test"
+@namespace DestinyLoadoutManager.Areas.Identity.Pages.Account
+@model TestModel
+
+@{
+    ViewData["Title"] = "Test Form";
+}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card mt-5">
+            <div class="card-body">
+                <h1>Form Submit Test</h1>
+                
+                <div id="debug-output" class="alert alert-info">
+                    <p>Waiting for form submission...</p>
+                </div>
+
+                <form method="post" id="testForm">
+                    @Html.AntiForgeryToken()
+                    
+                    <div class="form-group mb-3">
+                        <label for="testInput">Test Input</label>
+                        <input type="text" id="testInput" name="testInput" class="form-control" value="test123" required />
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100">Submit Test</button>
+                </form>
+
+                <div id="token-info" class="alert alert-warning mt-3">
+                    <p id="token-display">Token info will appear here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Display token info
+        document.addEventListener('DOMContentLoaded', function() {
+            var tokenInput = document.querySelector('[name="__RequestVerificationToken"]');
+            if (tokenInput) {
+                document.getElementById('token-display').innerHTML = 'Token found: ' + tokenInput.value.substring(0, 20) + '...';
+            } else {
+                document.getElementById('token-display').innerHTML = 'NO TOKEN FOUND!';
+            }
+            
+            // Log form submission attempt
+            document.getElementById('testForm').addEventListener('submit', function(e) {
+                console.log('Form submit event fired');
+                document.getElementById('debug-output').innerHTML = '<p>Form is submitting... POST should be sent now</p>';
+                
+                // Don't prevent - let it go through
+                console.log('Allowing default form submission');
+                return true;
+            });
+            
+            // Log before unload (means browser is navigating)
+            window.addEventListener('beforeunload', function() {
+                console.log('Page is unloading - form was submitted!');
+            });
+        });
+    </script>
+}

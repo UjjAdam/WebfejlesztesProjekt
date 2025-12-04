@@ -1,4 +1,4 @@
-@page
+@page "/Identity/Account/Register"
 @namespace DestinyLoadoutManager.Areas.Identity.Pages.Account
 @model RegisterModel
 
@@ -12,28 +12,42 @@
             <div class="card-body">
                 <h1>@ViewData["Title"]</h1>
 
-                <form method="post" asp-antiforgery="true">
+                <form method="post" id="registerForm">
+                    @Html.AntiForgeryToken()
+                    
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <strong>Regisztrációs hiba!</strong>
+                            <div asp-validation-summary="All" class="mb-0"></div>
+                        </div>
+                    }
+                    
                     <div class="form-group mb-3">
-                        <label asp-for="Input.Email"></label>
-                        <input asp-for="Input.Email" class="form-control" autocomplete="username" />
+                        <label asp-for="Input.UserName" class="form-label">Felhasználónév</label>
+                        <input asp-for="Input.UserName" class="form-control" placeholder="Válasszon felhasználónevet" autocomplete="username" required />
+                        <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Input.Email" class="form-label">Email cím</label>
+                        <input asp-for="Input.Email" class="form-control" placeholder="pelda@email.com" autocomplete="email" required />
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-3">
-                        <label asp-for="Input.Password"></label>
-                        <input asp-for="Input.Password" type="password" class="form-control" autocomplete="new-password" />
+                        <label asp-for="Input.Password" class="form-label">Jelszó</label>
+                        <input asp-for="Input.Password" type="password" class="form-control" placeholder="Minimum 6 karakter" autocomplete="new-password" required />
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        <small class="form-text text-muted">Legalább 6 karakter hosszú jelszó</small>
                     </div>
-                    <div class="form-group mb-3">
-                        <label asp-for="Input.ConfirmPassword"></label>
-                        <input asp-for="Input.ConfirmPassword" type="password" class="form-control" autocomplete="new-password" />
-                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                    <button type="button" class="btn btn-primary w-100" id="register-submit">
+                        <span id="registerText">Regisztráció</span>
+                        <span id="registerSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
                 </form>
 
                 <div class="mt-3">
                     <p>
-                        <a asp-page="Login">Already have an account? Login</a>
+                        <a href="/Identity/Account/Login" class="btn btn-link">Van már fiókja? Bejelentkezés</a>
                     </p>
                 </div>
             </div>
@@ -41,6 +55,21 @@
     </div>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+<script>
+document.getElementById('register-submit').addEventListener('click', function(e) {
+    console.log('Register button clicked');
+    e.preventDefault();
+    
+    const form = document.getElementById('registerForm');
+    console.log('Form found:', form);
+    
+    if (form) {
+        console.log('Submitting form...');
+        document.getElementById('registerText').textContent = 'Elküldés...';
+        document.getElementById('registerSpinner').classList.remove('d-none');
+        document.getElementById('register-submit').disabled = true;
+        
+        form.submit();
+    }
+});
+</script>

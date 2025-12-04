@@ -11,7 +11,7 @@ namespace DestinyLoadoutManager.Services
     public interface IWeaponService
     {
         Task<List<Weapon>> GetAllWeaponsAsync();
-        Task<Weapon> GetWeaponByIdAsync(int id);
+        Task<Weapon?> GetWeaponByIdAsync(int id);
         Task<List<Weapon>> GetWeaponsBySlotAsync(EquipSlot slot);
         Task<List<Weapon>> GetWeaponsByElementAsync(ElementType element);
         Task<List<Weapon>> GetWeaponsByTypeAsync(WeaponType type);
@@ -34,7 +34,7 @@ namespace DestinyLoadoutManager.Services
             return await _context.Weapons.OrderBy(w => w.Name).ToListAsync();
         }
 
-        public async Task<Weapon> GetWeaponByIdAsync(int id)
+        public async Task<Weapon?> GetWeaponByIdAsync(int id)
         {
             return await _context.Weapons.FindAsync(id);
         }

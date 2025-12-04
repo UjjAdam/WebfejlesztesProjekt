@@ -1,4 +1,4 @@
-@page
+@page "/Identity/Account/Login"
 @namespace DestinyLoadoutManager.Areas.Identity.Pages.Account
 @model LoginModel
 
@@ -13,34 +13,39 @@
                 <h1>@ViewData["Title"]</h1>
 
                 <section>
-                    <form method="post" asp-antiforgery="true">
+                    <form method="post" id="loginForm">
+                        @Html.AntiForgeryToken()
+                        
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                <strong>Bejelentkezési hiba!</strong>
+                                <div asp-validation-summary="All" class="mb-0"></div>
+                            </div>
+                        }
+                        
                         <div class="form-group mb-3">
-                            <label asp-for="Input.Email"></label>
-                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            <label asp-for="Input.UserName" class="form-label">Felhasználónév</label>
+                            <input asp-for="Input.UserName" class="form-control" placeholder="Adja meg a felhasználónevet" autocomplete="username" aria-required="true" required />
+                            <span asp-validation-for="Input.UserName" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-3">
-                            <label asp-for="Input.Password"></label>
-                            <input asp-for="Input.Password" type="password" class="form-control" autocomplete="current-password" aria-required="true" />
+                            <label asp-for="Input.Password" class="form-label">Jelszó</label>
+                            <input asp-for="Input.Password" type="password" class="form-control" placeholder="Adja meg a jelszavát" autocomplete="current-password" aria-required="true" required />
                             <span asp-validation-for="Input.Password" class="text-danger"></span>
                         </div>
-                        <div class="form-group mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" asp-for="Input.RememberMe" />
-                                <label class="form-check-label" asp-for="Input.RememberMe">
-                                    @Html.DisplayNameFor(m => m.Input.RememberMe)
-                                </label>
-                            </div>
-                        </div>
                         <div class="form-group">
-                            <button id="login-submit" type="submit" class="btn btn-primary w-100">Log in</button>
+                            <button id="login-submit" type="button" class="btn btn-primary w-100">
+                                <span id="loginText">Bejelentkezés</span>
+                                <span id="loginSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                            </button>
                         </div>
                     </form>
                 </section>
 
                 <div class="mt-3">
                     <p>
-                        <a asp-page="./Register">Register as a new user</a>
+                        <a href="/Identity/Account/Register" class="btn btn-link">Regisztráció új felhasználóként</a>
                     </p>
                 </div>
             </div>
@@ -48,6 +53,21 @@
     </div>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+<script>
+document.getElementById('login-submit').addEventListener('click', function(e) {
+    console.log('Login button clicked');
+    e.preventDefault();
+    
+    const form = document.getElementById('loginForm');
+    console.log('Form found:', form);
+    
+    if (form) {
+        console.log('Submitting form...');
+        document.getElementById('loginText').textContent = 'Elküldés...';
+        document.getElementById('loginSpinner').classList.remove('d-none');
+        document.getElementById('login-submit').disabled = true;
+        
+        form.submit();
+    }
+});
+</script>

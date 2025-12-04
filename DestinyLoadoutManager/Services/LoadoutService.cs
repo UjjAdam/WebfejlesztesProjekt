@@ -11,13 +11,13 @@ namespace DestinyLoadoutManager.Services
     public interface ILoadoutService
     {
         Task<List<Loadout>> GetUserLoadoutsAsync(string userId);
-        Task<Loadout> GetLoadoutByIdAsync(int id, string userId);
+        Task<Loadout?> GetLoadoutByIdAsync(int id, string userId);
         Task<Loadout> CreateLoadoutAsync(Loadout loadout);
         Task<bool> UpdateLoadoutAsync(Loadout loadout, string userId);
         Task<bool> DeleteLoadoutAsync(int id, string userId);
         Task<bool> AddWeaponToLoadoutAsync(int loadoutId, int weaponId, EquipSlot slot, string userId);
         Task<bool> RemoveWeaponFromLoadoutAsync(int loadoutWeaponId, string userId);
-        Task<Loadout> GetLoadoutWithWeaponsAsync(int id);
+        Task<Loadout?> GetLoadoutWithWeaponsAsync(int id);
     }
 
     public class LoadoutService : ILoadoutService
@@ -39,15 +39,13 @@ namespace DestinyLoadoutManager.Services
                 .ToListAsync();
         }
 
-        public async Task<Loadout> GetLoadoutByIdAsync(int id, string userId)
+        public async Task<Loadout?> GetLoadoutByIdAsync(int id, string userId)
         {
             return await _context.Loadouts
                 .Include(l => l.LoadoutWeapons)
-                .ThenInclude(lw => lw.Weapon)
+                    .ThenInclude(lw => lw.Weapon)
                 .FirstOrDefaultAsync(l => l.Id == id && l.UserId == userId);
-        }
-
-        public async Task<Loadout> CreateLoadoutAsync(Loadout loadout)
+        }        public async Task<Loadout> CreateLoadoutAsync(Loadout loadout)
         {
             loadout.CreatedAt = DateTime.UtcNow;
             loadout.UpdatedAt = DateTime.UtcNow;
@@ -121,7 +119,7 @@ namespace DestinyLoadoutManager.Services
                 .Include(lw => lw.Loadout)
                 .FirstOrDefaultAsync(lw => lw.Id == loadoutWeaponId);
 
-            if (loadoutWeapon == null || loadoutWeapon.Loadout.UserId != userId)
+            if (loadoutWeapon == null || loadoutWeapon.Loadout == null || loadoutWeapon.Loadout.UserId != userId)
                 return false;
 
             _context.LoadoutWeapons.Remove(loadoutWeapon);
@@ -130,7 +128,7 @@ namespace DestinyLoadoutManager.Services
             return true;
         }
 
-        public async Task<Loadout> GetLoadoutWithWeaponsAsync(int id)
+        public async Task<Loadout?> GetLoadoutWithWeaponsAsync(int id)
         {
             return await _context.Loadouts
                 .Include(l => l.LoadoutWeapons)

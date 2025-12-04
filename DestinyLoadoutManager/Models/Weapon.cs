@@ -9,7 +9,7 @@ namespace DestinyLoadoutManager.Models
 
         [Required]
         [StringLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Required]
         public WeaponType Type { get; set; }

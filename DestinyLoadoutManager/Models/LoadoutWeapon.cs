@@ -10,12 +10,12 @@ namespace DestinyLoadoutManager.Models
         public int LoadoutId { get; set; }
 
         [ForeignKey(nameof(LoadoutId))]
-        public virtual Loadout Loadout { get; set; }
+        public virtual Loadout? Loadout { get; set; }
 
         public int WeaponId { get; set; }
 
         [ForeignKey(nameof(WeaponId))]
-        public virtual Weapon Weapon { get; set; }
+        public virtual Weapon? Weapon { get; set; }
 
         [Required]
         public EquipSlot Slot { get; set; }

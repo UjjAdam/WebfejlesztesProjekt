@@ -1,0 +1,30 @@
+@page "/test-form"
+@model DestinyLoadoutManager.Pages.TestFormModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Form</title>
+</head>
+<body>
+    <h1>Test Form - Should POST to OnPost handler</h1>
+    
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div style="background: lightgreen; padding: 10px; margin: 10px 0;">
+            <strong>SUCCESS!</strong> Message from server: @Model.Message
+        </div>
+    }
+    
+    <form method="post">
+        <input type="text" name="testInput" placeholder="Type something" required />
+        <button type="submit">Send POST Request</button>
+    </form>
+    
+    <p>Expected: When you click the button, it should call OnPost() and display "SUCCESS!" message.</p>
+</body>
+</html>
+
+@functions {
+    public string Message { get; set; }
+}

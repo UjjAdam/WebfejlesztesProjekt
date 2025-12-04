@@ -23,6 +23,25 @@ namespace DestinyLoadoutManager.Controllers
             return View();
         }
 
+        public IActionResult Debug()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult DebugPost(string testInput)
+        {
+            _logger.LogInformation($"DebugPost received: {testInput}");
+            return Json(new { success = true, message = $"Received: {testInput}", timestamp = DateTime.Now });
+        }
+
+        [HttpGet]
+        public IActionResult DebugAjax()
+        {
+            _logger.LogInformation("DebugAjax called");
+            return Content("AJAX Response OK - " + DateTime.Now.ToString());
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

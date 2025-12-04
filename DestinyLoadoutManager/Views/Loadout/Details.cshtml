@@ -31,12 +31,12 @@
                             <div class="col-md-4 mb-3">
                                 <div class="weapon-card border rounded p-3">
                                     <h6>@lw.Slot.ToString() Slot</h6>
-                                    <p class="mb-1"><strong>@lw.Weapon.Name</strong></p>
+                                    <p class="mb-1"><strong>@lw.Weapon?.Name</strong></p>
                                     <p class="mb-1">
-                                        <span class="badge bg-primary">@lw.Weapon.Type</span>
-                                        <span class="badge" style="background-color: @GetElementColor(lw.Weapon.Element);">@lw.Weapon.Element</span>
+                                        <span class="badge bg-primary">@lw.Weapon?.Type</span>
+                                        <span class="badge" style="background-color: @GetElementColor(lw.Weapon?.Element ?? ElementType.Void);">@lw.Weapon?.Element</span>
                                     </p>
-                                    <p class="mb-0"><small>@lw.Weapon.AmmoType ammo</small></p>
+                                    <p class="mb-0"><small>@lw.Weapon?.AmmoType ammo</small></p>
                                 </div>
                             </div>
                         }
