@@ -9,9 +9,6 @@ namespace DestinyLoadoutManager.Data
     {
         public static void Initialize(ApplicationDbContext context)
         {
-            // Migrate any pending migrations
-            context.Database.Migrate();
-
             // Seed Weapons
             if (!context.Weapons.Any())
             {

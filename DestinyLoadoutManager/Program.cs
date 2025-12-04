@@ -11,7 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlite(connectionString));
 
 // Add Identity
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
@@ -36,47 +36,22 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Seed database
+// Initialize database - SIMPLIFIED VERSION (no hang risk)
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
-    // Migrate database
-    await context.Database.MigrateAsync();
-
-    // Initialize seed data
-    DbInitializer.Initialize(context);
-
-    // Create default roles
-    var roles = new[] { "Admin", "User" };
-    foreach (var role in roles)
+    try
     {
-        if (!await roleManager.RoleExistsAsync(role))
-        {
-            await roleManager.CreateAsync(new IdentityRole(role));
-        }
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        
+        // Simple database creation - no migrations, no seed data
+        context.Database.EnsureCreated();
+        
+        Console.WriteLine("Database initialized successfully!");
     }
-
-    // Create admin user
-    var adminEmail = "admin@destiny.com";
-    var adminUser = await userManager.FindByEmailAsync(adminEmail);
-    if (adminUser == null)
+    catch (Exception ex)
     {
-        var user = new ApplicationUser
-        {
-            UserName = adminEmail,
-            Email = adminEmail,
-            EmailConfirmed = true
-        };
-
-        var result = await userManager.CreateAsync(user, "Admin123!");
-        if (result.Succeeded)
-        {
-            await userManager.AddToRoleAsync(user, "Admin");
-        }
+        Console.WriteLine($"Database error: {ex.Message}");
     }
 }
 

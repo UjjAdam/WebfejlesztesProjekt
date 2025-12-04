@@ -16,6 +16,8 @@ namespace DestinyLoadoutManager.Areas.Identity.Pages.Account
         {
             _signInManager = signInManager;
             _logger = logger;
+            Input = new InputModel();
+            ExternalLogins = new List<AuthenticationScheme>();
         }
 
         [BindProperty]

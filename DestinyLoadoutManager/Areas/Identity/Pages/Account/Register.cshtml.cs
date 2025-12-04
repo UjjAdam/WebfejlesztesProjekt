@@ -20,6 +20,7 @@ namespace DestinyLoadoutManager.Areas.Identity.Pages.Account
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            Input = new InputModel();
         }
 
         [BindProperty]
