@@ -21,7 +21,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 6;
+    options.Password.RequiredLength = 5; // allow default admin/admin seed
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
@@ -61,6 +61,7 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
         
         // Simple database creation
         context.Database.EnsureCreated();
@@ -74,6 +75,37 @@ using (var scope = app.Services.CreateScope())
             {
                 roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
                 Console.WriteLine($"Role '{roleName}' created successfully!");
+            }
+        }
+
+        // Create default admin user if it doesn't exist
+        var adminUser = userManager.FindByNameAsync("admin").GetAwaiter().GetResult();
+        if (adminUser == null)
+        {
+            adminUser = new ApplicationUser
+            {
+                UserName = "admin",
+                Email = "admin@example.com",
+                EmailConfirmed = true
+            };
+
+            var result = userManager.CreateAsync(adminUser, "admin").GetAwaiter().GetResult();
+            if (result.Succeeded)
+            {
+                userManager.AddToRoleAsync(adminUser, "Admin").GetAwaiter().GetResult();
+                Console.WriteLine("Default admin user created (admin/admin).");
+            }
+            else
+            {
+                Console.WriteLine($"Failed to create default admin user: {string.Join(',', result.Errors.Select(e => e.Description))}");
+            }
+        }
+        else
+        {
+            // Ensure admin user stays in Admin role
+            if (!userManager.IsInRoleAsync(adminUser, "Admin").GetAwaiter().GetResult())
+            {
+                userManager.AddToRoleAsync(adminUser, "Admin").GetAwaiter().GetResult();
             }
         }
 

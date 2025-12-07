@@ -58,21 +58,39 @@ namespace DestinyLoadoutManager.Services
             {
                 var recommendation = new LoadoutRecommendation { Loadout = loadout };
 
-                // Calculate match score based on surge match
+                // Surge coverage: weight 30% of total score
                 var weaponsWithActiveSurge = loadout.LoadoutWeapons
                     .Where(lw => lw.Weapon != null && lw.Weapon.Element == request.ActiveSurge)
                     .ToList();
 
+                var totalWeapons = loadout.LoadoutWeapons.Count;
+                var surgeCoverageRatio = totalWeapons > 0
+                    ? Math.Min(1.0, weaponsWithActiveSurge.Count / (double)totalWeapons)
+                    : 0;
+
+                var surgeScore = (int)Math.Round(surgeCoverageRatio * 30);
+                recommendation.MatchScore += surgeScore;
+
                 if (weaponsWithActiveSurge.Any())
                 {
-                    recommendation.MatchScore += 10;
                     recommendation.MatchReasons.Add(
-                        $"{weaponsWithActiveSurge.Count} weapon(s) match active surge ({request.ActiveSurge})");
+                        $"{weaponsWithActiveSurge.Count}/{totalWeapons} weapons match active surge ({request.ActiveSurge})");
+                }
+                else
+                {
+                    recommendation.MatchReasons.Add($"No weapons match active surge ({request.ActiveSurge})");
                 }
 
-                // Calculate champion coverage
+                // Champion coverage: weight 70% of total score
                 var championCoverage = CalculateChampionCoverage(loadout, champions);
-                recommendation.MatchScore += championCoverage.Score;
+                var championRatio = champions.Any()
+                    ? (championCoverage.MatchedChampionCount / (double)champions.Count)
+                    : 0;
+                var championScore = champions.Any()
+                    ? (int)Math.Round(championRatio * 70)
+                    : 0;
+
+                recommendation.MatchScore += championScore;
                 recommendation.MatchReasons.AddRange(championCoverage.Reasons);
 
                 if (champions.Any())
@@ -88,11 +106,10 @@ namespace DestinyLoadoutManager.Services
             return recommendations.OrderByDescending(r => r.MatchScore).ToList();
         }
 
-        private (int Score, int MatchedChampionCount, List<string> Reasons) CalculateChampionCoverage(
+        private (int MatchedChampionCount, List<string> Reasons) CalculateChampionCoverage(
             Loadout loadout,
             List<Champion> selectedChampions)
         {
-            var score = 0;
             var matchedChampionCount = 0;
             var reasons = new List<string>();
 
@@ -109,7 +126,6 @@ namespace DestinyLoadoutManager.Services
                 if (matchingWeapons.Any())
                 {
                     matchedChampionCount++;
-                    score += 5 * matchingWeapons.Count;
                     reasons.Add($"✓ {champion.Name}: {matchingWeapons.Count} suitable weapon(s)");
                 }
                 else
@@ -118,7 +134,7 @@ namespace DestinyLoadoutManager.Services
                 }
             }
 
-            return (score, matchedChampionCount, reasons);
+            return (matchedChampionCount, reasons);
         }
     }
 }
