@@ -72,38 +72,39 @@
             _ => "#333333"
         };
     }
-}
-            private string GetElementIcon(DestinyLoadoutManager.Models.ElementType element)
-            {
-                return element switch
-                {
-                    DestinyLoadoutManager.Models.ElementType.Arc => "/icons/elements/arc.png",
-                    DestinyLoadoutManager.Models.ElementType.Solar => "/icons/elements/solar.png",
-                    DestinyLoadoutManager.Models.ElementType.Void => "/icons/elements/void.png",
-                    DestinyLoadoutManager.Models.ElementType.Kinetic => "/icons/elements/kinetic.png",
-                    _ => "/icons/elements/kinetic.png"
-                };
-            }
 
-            private string GetWeaponTypeIcon(DestinyLoadoutManager.Models.WeaponType type)
-            {
-                return type switch
-                {
-                    DestinyLoadoutManager.Models.WeaponType.AutoRifle => "/icons/weapon_type/auto_rifle.png",
-                    DestinyLoadoutManager.Models.WeaponType.PulseRifle => "/icons/weapon_type/pulse_rifle.png",
-                    DestinyLoadoutManager.Models.WeaponType.ScoutRifle => "/icons/weapon_type/scout_rifle.png",
-                    DestinyLoadoutManager.Models.WeaponType.SniperRifle => "/icons/weapon_type/sniper_rifle.png",
-                    DestinyLoadoutManager.Models.WeaponType.SubmachineGun => "/icons/weapon_type/smg.png",
-                    DestinyLoadoutManager.Models.WeaponType.MachineGun => "/icons/weapon_type/machinegun.png",
-                    DestinyLoadoutManager.Models.WeaponType.FusionRifle => "/icons/weapon_type/fusion_rifle.png",
-                    DestinyLoadoutManager.Models.WeaponType.RocketLauncher => "/icons/weapon_type/rocket_launcher.png",
-                    DestinyLoadoutManager.Models.WeaponType.GrenadeGauncher => "/icons/weapon_type/grenade_launcher.png",
-                    DestinyLoadoutManager.Models.WeaponType.HandCannon => "/icons/weapon_type/hand_cannon.png",
-                    DestinyLoadoutManager.Models.WeaponType.Shotgun => "/icons/weapon_type/shotgun.png",
-                    DestinyLoadoutManager.Models.WeaponType.LinearFusionRifle => "/icons/weapon_type/linear_rifle.png",
-                    DestinyLoadoutManager.Models.WeaponType.Bow => "/icons/weapon_type/bow.png",
-                    DestinyLoadoutManager.Models.WeaponType.Sword => "/icons/weapon_type/sword.png",
-                    _ => "/icons/weapon_type/auto_rifle.png"
-                };
-            }
+    private string GetElementIcon(DestinyLoadoutManager.Models.ElementType element)
+    {
+        return element switch
+        {
+            DestinyLoadoutManager.Models.ElementType.Arc => "/icons/elements/arc.png",
+            DestinyLoadoutManager.Models.ElementType.Solar => "/icons/elements/solar.png",
+            DestinyLoadoutManager.Models.ElementType.Void => "/icons/elements/void.png",
+            DestinyLoadoutManager.Models.ElementType.Kinetic => "/icons/elements/kinetic.png",
+            _ => "/icons/elements/kinetic.png"
+        };
+    }
+
+    private string GetWeaponTypeIcon(DestinyLoadoutManager.Models.WeaponType type)
+    {
+        return type switch
+        {
+            DestinyLoadoutManager.Models.WeaponType.AutoRifle => "/icons/weapon_type/auto_rifle.png",
+            DestinyLoadoutManager.Models.WeaponType.PulseRifle => "/icons/weapon_type/pulse_rifle.png",
+            DestinyLoadoutManager.Models.WeaponType.ScoutRifle => "/icons/weapon_type/scout_rifle.png",
+            DestinyLoadoutManager.Models.WeaponType.SniperRifle => "/icons/weapon_type/sniper_rifle.png",
+            DestinyLoadoutManager.Models.WeaponType.SubmachineGun => "/icons/weapon_type/smg.png",
+            DestinyLoadoutManager.Models.WeaponType.MachineGun => "/icons/weapon_type/machinegun.png",
+            DestinyLoadoutManager.Models.WeaponType.FusionRifle => "/icons/weapon_type/fusion_rifle.png",
+            DestinyLoadoutManager.Models.WeaponType.RocketLauncher => "/icons/weapon_type/rocket_launcher.png",
+            DestinyLoadoutManager.Models.WeaponType.GrenadeGauncher => "/icons/weapon_type/grenade_launcher.png",
+            DestinyLoadoutManager.Models.WeaponType.HandCannon => "/icons/weapon_type/hand_cannon.png",
+            DestinyLoadoutManager.Models.WeaponType.Shotgun => "/icons/weapon_type/shotgun.png",
+            DestinyLoadoutManager.Models.WeaponType.LinearFusionRifle => "/icons/weapon_type/linear_rifle.png",
+            DestinyLoadoutManager.Models.WeaponType.Bow => "/icons/weapon_type/bow.png",
+            DestinyLoadoutManager.Models.WeaponType.Sword => "/icons/weapon_type/sword.png",
+            _ => "/icons/weapon_type/auto_rifle.png"
+        };
+    }
+}
 
