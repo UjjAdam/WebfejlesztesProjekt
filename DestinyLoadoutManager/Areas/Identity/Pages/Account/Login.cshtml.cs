@@ -7,6 +7,7 @@ using DestinyLoadoutManager.Models;
 
 namespace DestinyLoadoutManager.Areas.Identity.Pages.Account
 {
+    [IgnoreAntiforgeryToken]
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -55,18 +56,25 @@ namespace DestinyLoadoutManager.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
+            _logger.LogInformation($"Login attempt for user: {Input.UserName}");
+            
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect("/Loadout/Index");
+                    _logger.LogInformation($"User {Input.UserName} logged in successfully.");
+                    return Redirect("/Loadout/Index");
                 }
                 else
                 {
+                    _logger.LogWarning($"Failed login attempt for user: {Input.UserName}");
                     ModelState.AddModelError(string.Empty, "Érvénytelen felhasználónév vagy jelszó.");
                 }
+            }
+            else
+            {
+                _logger.LogWarning($"ModelState invalid for user: {Input.UserName}");
             }
 
             return Page();

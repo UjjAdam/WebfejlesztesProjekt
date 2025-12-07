@@ -6,6 +6,7 @@ using DestinyLoadoutManager.Models;
 
 namespace DestinyLoadoutManager.Areas.Identity.Pages.Account
 {
+    [IgnoreAntiforgeryToken]
     public class RegisterModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -51,26 +52,37 @@ namespace DestinyLoadoutManager.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync()
         {
+            _logger.LogInformation($"Registration attempt for user: {Input.UserName}, email: {Input.Email}");
+            
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation($"User {Input.UserName} created successfully in database.");
 
                     // Add User role by default
                     await _userManager.AddToRoleAsync(user, "User");
+                    _logger.LogInformation($"User role added to {Input.UserName}.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User signed in automatically.");
+                    _logger.LogInformation($"User {Input.UserName} signed in automatically after registration.");
                     
-                    return LocalRedirect("/Loadout/Index");
+                    return Redirect("/Loadout/Index");
+                }
+                else
+                {
+                    _logger.LogError($"Failed to create user {Input.UserName}. Errors: {string.Join(", ", result.Errors.Select(e => e.Description))}");
                 }
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+            }
+            else
+            {
+                _logger.LogWarning($"ModelState invalid for registration: {Input.UserName}");
             }
 
             return Page();

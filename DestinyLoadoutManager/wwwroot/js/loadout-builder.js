@@ -27,10 +27,10 @@ function updateLoadoutPreview() {
 
 // Form Validation
 function initializeFormValidation() {
-    const forms = document.querySelectorAll('form');
+    const forms = document.querySelectorAll('form:not(#loginForm):not(#registerForm)');
     forms.forEach(form => {
         form.addEventListener('submit', function(e) {
-            if (!form.checkValidity() === false) {
+            if (form.checkValidity() === false) {
                 e.preventDefault();
                 e.stopPropagation();
             }

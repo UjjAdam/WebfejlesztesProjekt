@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DestinyLoadoutManager.Data;
 using DestinyLoadoutManager.Models;
@@ -39,11 +40,13 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add(new IgnoreAntiforgeryTokenAttribute());
+});
 builder.Services.AddRazorPages(options =>
 {
-    // Disable auto-validate antiforgery for all Razor Pages
-    options.Conventions.ConfigureFilter(new Microsoft.AspNetCore.Mvc.IgnoreAntiforgeryTokenAttribute());
+    options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
 });
 
 var app = builder.Build();

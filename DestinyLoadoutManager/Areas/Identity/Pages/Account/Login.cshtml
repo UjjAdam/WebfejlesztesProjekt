@@ -14,8 +14,6 @@
 
                 <section>
                     <form method="post" id="loginForm">
-                        @Html.AntiForgeryToken()
-                        
                         @if (!ViewData.ModelState.IsValid)
                         {
                             <div class="alert alert-danger" role="alert">
@@ -25,17 +23,15 @@
                         }
                         
                         <div class="form-group mb-3">
-                            <label asp-for="Input.UserName" class="form-label">Felhasználónév</label>
-                            <input asp-for="Input.UserName" class="form-control" placeholder="Adja meg a felhasználónevet" autocomplete="username" aria-required="true" required />
-                            <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                            <label for="Input_UserName" class="form-label">Felhasználónév</label>
+                            <input id="Input_UserName" name="Input.UserName" type="text" class="form-control" placeholder="Adja meg a felhasználónevet" autocomplete="username" />
                         </div>
                         <div class="form-group mb-3">
-                            <label asp-for="Input.Password" class="form-label">Jelszó</label>
-                            <input asp-for="Input.Password" type="password" class="form-control" placeholder="Adja meg a jelszavát" autocomplete="current-password" aria-required="true" required />
-                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            <label for="Input_Password" class="form-label">Jelszó</label>
+                            <input id="Input_Password" name="Input.Password" type="password" class="form-control" placeholder="Adja meg a jelszavát" autocomplete="current-password" />
                         </div>
                         <div class="form-group">
-                            <button id="login-submit" type="button" class="btn btn-primary w-100">
+                            <button id="login-submit" type="submit" class="btn btn-primary w-100">
                                 <span id="loginText">Bejelentkezés</span>
                                 <span id="loginSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                             </button>
@@ -52,22 +48,3 @@
         </div>
     </div>
 </div>
-
-<script>
-document.getElementById('login-submit').addEventListener('click', function(e) {
-    console.log('Login button clicked');
-    e.preventDefault();
-    
-    const form = document.getElementById('loginForm');
-    console.log('Form found:', form);
-    
-    if (form) {
-        console.log('Submitting form...');
-        document.getElementById('loginText').textContent = 'Elküldés...';
-        document.getElementById('loginSpinner').classList.remove('d-none');
-        document.getElementById('login-submit').disabled = true;
-        
-        form.submit();
-    }
-});
-</script>

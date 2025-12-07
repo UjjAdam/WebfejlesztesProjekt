@@ -12,12 +12,6 @@ taskkill /IM dotnet.exe /F 2>nul
 taskkill /IM DestinyLoadoutManager.exe /F 2>nul
 timeout /t 2 /nobreak >nul
 
-:: Clean old database for fresh start
-echo Cleaning old database...
-del /f /q "DestinyLoadoutManager.db" 2>nul
-del /f /q "DestinyLoadoutManager.db-shm" 2>nul
-del /f /q "DestinyLoadoutManager.db-wal" 2>nul
-
 echo.
 echo Building project...
 dotnet build
