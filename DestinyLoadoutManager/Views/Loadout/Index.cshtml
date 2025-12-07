@@ -31,28 +31,15 @@
                                     <div class="mb-2">
                                         @foreach (var lw in loadout.LoadoutWeapons.OrderBy(x => x.Slot))
                                         {
-                                            var elementColor = lw.Weapon?.Element switch
-                                            {
-                                                DestinyLoadoutManager.Models.ElementType.Solar => "warning",
-                                                DestinyLoadoutManager.Models.ElementType.Arc => "info",
-                                                DestinyLoadoutManager.Models.ElementType.Void => "dark",
-                                                DestinyLoadoutManager.Models.ElementType.Kinetic => "secondary",
-                                                _ => "light"
-                                            };
-                                            var elementEmoji = lw.Weapon?.Element switch
-                                            {
-                                                DestinyLoadoutManager.Models.ElementType.Solar => "🔥",
-                                                DestinyLoadoutManager.Models.ElementType.Arc => "⚡",
-                                                DestinyLoadoutManager.Models.ElementType.Void => "💜",
-                                                DestinyLoadoutManager.Models.ElementType.Kinetic => "⚪",
-                                                _ => "❓"
-                                            };
-
                                             <div class="mb-1">
                                                 <small>
                                                     <strong>@lw.Slot:</strong> @lw.Weapon?.Name
-                                                    <span class="badge bg-@elementColor">@elementEmoji @lw.Weapon?.Element</span>
-                                                    <span class="badge bg-secondary">@lw.Weapon?.Type</span>
+                                                    <span class="badge bg-light text-dark d-inline-flex align-items-center gap-1">
+                                                        <img src="@GetElementIcon(lw.Weapon?.Element)" class="icon-inline" alt="@lw.Weapon?.Element icon" /> @lw.Weapon?.Element
+                                                    </span>
+                                                    <span class="badge bg-secondary d-inline-flex align-items-center gap-1">
+                                                        <img src="@GetWeaponTypeIcon(lw.Weapon?.Type)" class="icon-inline" alt="@lw.Weapon?.Type icon" /> @lw.Weapon?.Type
+                                                    </span>
                                                 </small>
                                             </div>
                                         }
@@ -81,3 +68,39 @@
         }
     </div>
 </div>
+
+@functions {
+    private string GetElementIcon(DestinyLoadoutManager.Models.ElementType? element)
+    {
+        return element switch
+        {
+            DestinyLoadoutManager.Models.ElementType.Arc => "/icons/elements/arc.png",
+            DestinyLoadoutManager.Models.ElementType.Solar => "/icons/elements/solar.png",
+            DestinyLoadoutManager.Models.ElementType.Void => "/icons/elements/void.png",
+            DestinyLoadoutManager.Models.ElementType.Kinetic => "/icons/elements/kinetic.png",
+            _ => "/icons/elements/kinetic.png"
+        };
+    }
+
+    private string GetWeaponTypeIcon(DestinyLoadoutManager.Models.WeaponType? type)
+    {
+        return type switch
+        {
+            DestinyLoadoutManager.Models.WeaponType.AutoRifle => "/icons/weapon_type/auto_rifle.png",
+            DestinyLoadoutManager.Models.WeaponType.PulseRifle => "/icons/weapon_type/pulse_rifle.png",
+            DestinyLoadoutManager.Models.WeaponType.ScoutRifle => "/icons/weapon_type/scout_rifle.png",
+            DestinyLoadoutManager.Models.WeaponType.SniperRifle => "/icons/weapon_type/sniper_rifle.png",
+            DestinyLoadoutManager.Models.WeaponType.SubmachineGun => "/icons/weapon_type/smg.png",
+            DestinyLoadoutManager.Models.WeaponType.MachineGun => "/icons/weapon_type/machinegun.png",
+            DestinyLoadoutManager.Models.WeaponType.FusionRifle => "/icons/weapon_type/fusion_rifle.png",
+            DestinyLoadoutManager.Models.WeaponType.RocketLauncher => "/icons/weapon_type/rocket_launcher.png",
+            DestinyLoadoutManager.Models.WeaponType.GrenadeGauncher => "/icons/weapon_type/grenade_launcher.png",
+            DestinyLoadoutManager.Models.WeaponType.HandCannon => "/icons/weapon_type/hand_cannon.png",
+            DestinyLoadoutManager.Models.WeaponType.Shotgun => "/icons/weapon_type/shotgun.png",
+            DestinyLoadoutManager.Models.WeaponType.LinearFusionRifle => "/icons/weapon_type/linear_rifle.png",
+            DestinyLoadoutManager.Models.WeaponType.Bow => "/icons/weapon_type/bow.png",
+            DestinyLoadoutManager.Models.WeaponType.Sword => "/icons/weapon_type/sword.png",
+            _ => "/icons/weapon_type/auto_rifle.png"
+        };
+    }
+}

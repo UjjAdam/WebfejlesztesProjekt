@@ -58,10 +58,15 @@ namespace DestinyLoadoutManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Description")] Loadout loadout)
         {
+            // Set UserId before validation
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+            loadout.UserId = userId;
+            
+            // Remove UserId from ModelState validation since we set it manually
+            ModelState.Remove("UserId");
+            
             if (ModelState.IsValid)
             {
-                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
-                loadout.UserId = userId;
                 await _loadoutService.CreateLoadoutAsync(loadout);
                 return RedirectToAction(nameof(Edit), new { id = loadout.Id });
             }

@@ -37,10 +37,11 @@
                                 {
                                     @foreach (var champion in champions)
                                     {
-                                        <div class="form-check">
+                                        <div class="form-check d-flex align-items-center gap-2">
                                             <input class="form-check-input" type="checkbox" name="selectedChampionIds" value="@champion.Id" id="champion_@champion.Id">
-                                            <label class="form-check-label" for="champion_@champion.Id">
-                                                @champion.Name - @champion.Description
+                                            <label class="form-check-label d-flex align-items-center gap-2" for="champion_@champion.Id">
+                                                <img src="@GetChampionIcon(champion.Name)" class="icon-inline" alt="@champion.Name icon" />
+                                                <span>@champion.Name - @champion.Description</span>
                                             </label>
                                         </div>
                                     }
@@ -95,3 +96,16 @@ document.getElementById('recommendationForm').addEventListener('submit', async f
     }
 });
 </script>
+
+@functions {
+    private string GetChampionIcon(string name)
+    {
+        return name switch
+        {
+            "Anti-Barrier" => "/icons/champions/barrier.png",
+            "Overload" => "/icons/champions/overload.png",
+            "Unstoppable" => "/icons/champions/unstoppable.png",
+            _ => "/icons/champions/barrier.png"
+        };
+    }
+}

@@ -96,6 +96,13 @@ main {
     background-color: var(--kinetic-color) !important;
 }
 
+.icon-inline {
+    height: 1em;
+    width: auto;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
 /* Weapon Cards */
 .weapon-card {
     background: linear-gradient(135deg, #1a1f3a 0%, #0f1419 100%);

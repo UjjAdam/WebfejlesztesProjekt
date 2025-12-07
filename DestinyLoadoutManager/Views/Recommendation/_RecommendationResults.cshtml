@@ -9,8 +9,8 @@
 else
 {
     <div class="card">
-        <div class="card-header bg-success text-white">
-            <h5>📋 Recommended Loadouts</h5>
+        <div class="card-header bg-success text-white d-flex align-items-center gap-2">
+            <h5 class="mb-0">Recommended Loadouts</h5>
         </div>
         <div class="card-body">
             @foreach (var rec in Model.OrderByDescending(r => r.MatchScore))
@@ -40,7 +40,7 @@ else
                         <ul class="mb-0">
                             @foreach (var reason in rec.MatchReasons)
                             {
-                                <li>@Html.Raw(reason)</li>
+                                <li>@Html.Raw(DecorateReason(reason))</li>
                             }
                         </ul>
 
@@ -53,4 +53,14 @@ else
             }
         </div>
     </div>
+}
+
+@functions {
+    private string DecorateReason(string reason)
+    {
+        return reason
+            .Replace("Anti-Barrier", "<img src='/icons/champions/barrier.png' class='icon-inline' alt='Anti-Barrier icon' /> Anti-Barrier")
+            .Replace("Overload", "<img src='/icons/champions/overload.png' class='icon-inline' alt='Overload icon' /> Overload")
+            .Replace("Unstoppable", "<img src='/icons/champions/unstoppable.png' class='icon-inline' alt='Unstoppable icon' /> Unstoppable");
+    }
 }
