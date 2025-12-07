@@ -193,6 +193,12 @@ main {
     transition: all 0.3s ease;
 }
 
+.form-select option,
+.form-control option {
+    background-color: #1f2430;
+    color: #f0f0f0;
+}
+
 .form-control:focus,
 .form-select:focus {
     background-color: #0f1419;
@@ -204,6 +210,11 @@ main {
 .form-label {
     color: #e0e0e0;
     font-weight: 500;
+}
+
+/* Neutralize green checkbox highlight; align with accent color */
+.form-check-input {
+    accent-color: var(--destiny-accent);
 }
 
 /* Alerts */

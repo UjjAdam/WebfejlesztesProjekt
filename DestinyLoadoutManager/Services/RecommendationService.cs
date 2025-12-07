@@ -71,26 +71,29 @@ namespace DestinyLoadoutManager.Services
                 }
 
                 // Calculate champion coverage
-                var championCoverageScore = CalculateChampionCoverage(loadout, champions);
-                recommendation.MatchScore += championCoverageScore.Score;
-                recommendation.MatchReasons.AddRange(championCoverageScore.Reasons);
+                var championCoverage = CalculateChampionCoverage(loadout, champions);
+                recommendation.MatchScore += championCoverage.Score;
+                recommendation.MatchReasons.AddRange(championCoverage.Reasons);
 
-                // Only include loadouts with some match
-                if (recommendation.MatchScore > 0)
+                if (champions.Any())
                 {
-                    recommendations.Add(recommendation);
+                    recommendation.MatchReasons.Add($"Covers {championCoverage.MatchedChampionCount} / {champions.Count} champion types selected");
                 }
+
+                // Always include the loadout so we can still surface the best partial match
+                recommendations.Add(recommendation);
             }
 
             // Sort by match score (highest first)
             return recommendations.OrderByDescending(r => r.MatchScore).ToList();
         }
 
-        private (int Score, List<string> Reasons) CalculateChampionCoverage(
+        private (int Score, int MatchedChampionCount, List<string> Reasons) CalculateChampionCoverage(
             Loadout loadout,
             List<Champion> selectedChampions)
         {
             var score = 0;
+            var matchedChampionCount = 0;
             var reasons = new List<string>();
 
             foreach (var champion in selectedChampions)
@@ -105,6 +108,7 @@ namespace DestinyLoadoutManager.Services
 
                 if (matchingWeapons.Any())
                 {
+                    matchedChampionCount++;
                     score += 5 * matchingWeapons.Count;
                     reasons.Add($"✓ {champion.Name}: {matchingWeapons.Count} suitable weapon(s)");
                 }
@@ -114,7 +118,7 @@ namespace DestinyLoadoutManager.Services
                 }
             }
 
-            return (score, reasons);
+            return (score, matchedChampionCount, reasons);
         }
     }
 }

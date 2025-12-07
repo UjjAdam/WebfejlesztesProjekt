@@ -24,7 +24,9 @@
                                 {
                                     @foreach (var surge in surges)
                                     {
-                                        <option value="@surge.Name">@surge.Name (@surge.ElementType)</option>
+                                        <option value="@surge.Name" style="background-image:url('@GetElementIcon(surge.ElementType)');background-repeat:no-repeat;background-size:1em;background-position:0.35rem center;padding-left:1.8rem;">
+                                            @surge.Name
+                                        </option>
                                     }
                                 }
                             </select>
@@ -73,16 +75,17 @@ document.getElementById('recommendationForm').addEventListener('submit', async f
     }
 
     try {
+        const params = new URLSearchParams();
+        params.append('surgeName', surgeName);
+        selectedChampionIds.forEach(id => params.append('selectedChampionIds', id));
+
         const response = await fetch('@Url.Action("GetRecommendations")', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'X-Requested-With': 'XMLHttpRequest'
             },
-            body: new URLSearchParams({
-                'surgeName': surgeName,
-                'selectedChampionIds': selectedChampionIds
-            })
+            body: params
         });
 
         if (response.ok) {
@@ -106,6 +109,18 @@ document.getElementById('recommendationForm').addEventListener('submit', async f
             "Overload" => "/icons/champions/overload.png",
             "Unstoppable" => "/icons/champions/unstoppable.png",
             _ => "/icons/champions/barrier.png"
+        };
+    }
+
+    private string GetElementIcon(DestinyLoadoutManager.Models.ElementType element)
+    {
+        return element switch
+        {
+            DestinyLoadoutManager.Models.ElementType.Arc => "/icons/elements/arc.png",
+            DestinyLoadoutManager.Models.ElementType.Solar => "/icons/elements/solar.png",
+            DestinyLoadoutManager.Models.ElementType.Void => "/icons/elements/void.png",
+            DestinyLoadoutManager.Models.ElementType.Kinetic => "/icons/elements/kinetic.png",
+            _ => "/icons/elements/kinetic.png"
         };
     }
 }
