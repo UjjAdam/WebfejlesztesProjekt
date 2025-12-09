@@ -97,9 +97,13 @@ namespace DestinyLoadoutManager.Controllers
             if (id != loadout.Id)
                 return NotFound();
 
+            // Ensure UserId is set for validation/authorization
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+            loadout.UserId = userId;
+            ModelState.Remove("UserId");
+
             if (ModelState.IsValid)
             {
-                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
                 await _loadoutService.UpdateLoadoutAsync(loadout, userId);
                 return RedirectToAction(nameof(Details), new { id = loadout.Id });
             }
